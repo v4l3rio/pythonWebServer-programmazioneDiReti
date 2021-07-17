@@ -13,11 +13,25 @@ import http.server
 import socketserver
 import threading 
 
+#Manage the wait, used for intercept CTRL+C
+waiting_refresh = threading.Event()
+
 #Accepting port number from standard input, else set default value
 if sys.argv[1:]:
   port = int(sys.argv[1])
 else:
   port = 8080
+
+#Intercept CTRL+C
+def signal_handler(signal, frame):
+    print( ' Exiting http server (Ctrl+C pressed)')
+    try:
+      if(server):
+        server.server_close()
+    finally:
+      # fermo il thread del refresh senza busy waiting
+      waiting_refresh.set()
+      sys.exit(0)
 
 
 class ServerHandler(http.server.SimpleHTTPRequestHandler):        
@@ -36,7 +50,7 @@ def main():
     #Rebind existing port number
     server.allow_reuse_address = True  
     #intercept CTRL+C
-    #####signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGINT, signal_handler)
     try:
       while True:
         server.serve_forever()

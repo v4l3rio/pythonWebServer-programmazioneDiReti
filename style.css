@@ -1,0 +1,256 @@
+[class*="col-"] {
+	padding: 0;
+}
+
+a{ text-decoration: none; }
+
+li { list-style: none; }
+
+h3 { margin-top: 20px; }
+
+h3, h4, h2 { margin-bottom: 15px; }
+
+body {
+	font-size: 16px;
+}
+
+header{
+	background: #333;
+	padding: 20px 0;
+	margin-bottom: 40px;
+}
+
+header .logo { float: left; }
+
+header .logo h1 span { color: #a09b9b; }
+
+header .logo h1 a { color:#fff; }
+
+nav ul { height: 40px; } 
+
+nav li { line-height: 40px; }
+
+nav li:last-child a{ margin-right: 0; }
+
+nav { float: right; }
+
+nav a, .btn { color: #ddd; }
+
+nav a {
+	display: block;
+	margin-right: 2.5em;
+}
+
+
+ 
+nav a:hover{ color: #fc056c; }
+
+nav li { display: inline-block;  }
+
+.featured img { max-width: 100%; }
+
+.featured-img-thumb { margin-right: 3%; }
+
+.featured-post p, .portafolio-gallery p { padding: 0 1em 20px 0; }
+
+.btn { padding: 10px; border-radius: 10px 10px 10px 10px;; background: #858789;}
+
+.btn:hover{ background: #fc056c; color: white; }
+
+.main-content, .twitter-quote { margin-bottom: 30px; padding-bottom: 30px; }
+
+.main-content header { background: transparent; }
+
+.main-content .btn { text-align: center; width: 10%; margin: 0 auto; display: block; }
+
+.featured, .main-content { border-bottom: 3px dashed #000; }
+
+.portafolio li {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.footer-twupdate div a { color: magenta }
+
+.footer, .featured, .main-content, .portafolio-gallery, .twitter-quote, header {
+	clear: both;
+	overflow: hidden;
+}
+
+.twitter-icon a {
+	margin-left: 30px;
+  display: block;
+  width: 17%;
+}
+
+.twitter-quote .fa-twitter{
+	display: block;
+	font-size: 10em;
+  display: block;
+  color: #ccc;
+}
+
+.twitter-quote blockquote {
+	padding: 50px 0;
+	font-size: 2em;
+}
+
+.twitter-quote blockquote em { font-style: italic; }
+
+.twitter-quote blockquote a { color: rebeccapurple; }
+
+.twitter-quote blockquote a:hover {
+	text-decoration: underline;
+}
+
+footer { background: #332549; color: #c5cdd6; }
+
+.footer-top, .footer-middle { padding-bottom: 50px; border-bottom: 1px solid #cdcdcd; }
+
+.footer-middle [class*="col-"] { display: inline-block; }
+
+.footer-top p{ margin: 50px 0 0 0; }
+
+.footer-top div:first-child li {
+	display: inline-block;
+	padding: 10px 3%;
+	border: 3px dotted #c5cdd6;
+	border-radius: 100%;
+}
+
+.footer-top div:first-child li:hover { border-color: #fc056c; }
+
+.footer-top a { color: #c5cdd6; display: block; }
+
+.footer-top a:hover { color:#fc056c;  }
+
+}
+
+.footer-form { position: relative; }
+
+/* Grid System */
+
+/* GLOBAL */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+ }
+
+/* Grid system */
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (max-width: 767px) {
+	.container {
+	    margin:0 !important;
+	    padding:0 !important;
+	}
+
+	.row {
+	    margin:0 !important;
+	    padding:0 !important;
+	}	
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+.row {
+	width: 100%;
+	margin-left: -14px;
+	margin-right: -14px;
+}
+
+.row:before, .row:after{
+  content: " ";
+  display: table;
+}
+
+.row:after {
+  clear: both;
+}
+
+[class*="col-"] {
+	min-height: 7px;
+	padding: 0 14px;
+	float: left;
+}
+
+.col-1 {
+	/* (1 / 12) x 100 */
+	width: 8.333333%;
+} 
+
+.col-2 {
+	/* (2 / 12) x 100 */
+	width: 16.666667%;
+} 
+
+.col-3 {
+	/* (3 / 12) x 100 */
+	width: 25%;
+} 
+
+.col-4 {
+	/* (4 / 12) x 100 */
+	width: 33.333333%;
+}
+
+.col-5 {
+	/* (5 / 12) x 100 */
+	width: 41.666667%;
+}
+
+.col-6 {
+	/* (6 / 12) x 100 */
+	width: 50%;
+} 
+
+.col-7 {
+	/* (7 / 12) x 100 */
+	width: 58.333333%;
+}
+
+.col-8 {
+	/* (8 / 12) x 100 */
+	width: 66.666667%;
+}
+
+.col-9 {
+	/* (9 / 12) x 100 */
+	width: 75%;
+}
+
+.col-10 {
+	/* (10 / 12) x 100 */
+	width: 83.333333%;
+}
+
+.col-11 {
+	/* (11 / 12) x 100 */
+	width: 91.666667%;
+}
+
+.col-12 {
+	/* (12 / 12) x 100 */
+	width: 100%;
+}
