@@ -7,11 +7,14 @@
 Web Server in Python per una azienda ospedaliera
 '''
 
-
 import sys, signal
 import http.server
 import socketserver
+import shutil
 import threading 
+import os
+
+FILEPATH = "pdf.pdf"
 
 #Manage the wait, used for intercept CTRL+C
 waiting_refresh = threading.Event()
@@ -37,7 +40,18 @@ def signal_handler(signal, frame):
 class ServerHandler(http.server.SimpleHTTPRequestHandler):        
     def do_GET(self):
         print(self.path)
-        http.server.SimpleHTTPRequestHandler.do_GET(self)
+        if(self.path=="/"+FILEPATH):
+          print("Download File")
+          with open(FILEPATH, 'rb') as f:
+            self.send_response(200)
+            self.send_header("Content-Type", 'application/pdf')
+            self.send_header("Content-Disposition", 'attachment; filename="{}"'.format(os.path.basename(FILEPATH)))
+            fs = os.fstat(f.fileno())
+            self.send_header("Content-Length", str(fs.st_size))
+            self.end_headers()
+            shutil.copyfileobj(f, self.wfile)
+        else:
+          http.server.SimpleHTTPRequestHandler.do_GET(self)
         
 
 # ThreadingTCPServer allows many concurrent requests
