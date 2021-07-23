@@ -11,18 +11,18 @@ import sys
 import signal
 import http.server
 import socketserver
-import shutil
+
 import threading
 import os
 import base64
-from pprint import pprint
+import zlib
 
 
 FILEPATH = "pdf.pdf"
 
 USER = "admin"
 PASSWORD = "programmazionedireti"
-
+USE_GZIP_COMPRESSION = True
 
 # Manage the wait, used for intercept CTRL+C
 waiting_refresh = threading.Event()
@@ -50,16 +50,23 @@ def signal_handler(signal, frame):
 
 
 class ServerHandler(http.server.SimpleHTTPRequestHandler):
+
+    @staticmethod
+    def gzip_encode(content):
+        gzip_compress = zlib.compressobj(9, zlib.DEFLATED, zlib.MAX_WBITS | 16)
+        data = gzip_compress.compress(content) + gzip_compress.flush()
+        return data
+
     @staticmethod
     def check_credentials(auth_header):
         token = auth_header.split(" ")[1]
         data = USER + ":" + PASSWORD
         encoded_bytes = base64.b64encode(data.encode("utf-8"))
-        encoded_str = str(encoded_bytes, "utf-8")
+        encoded_str = str(encoded_bytes)
         return token == encoded_str
 
     def do_GET(self):
-        auth_header = str(self.headers.get('Authorization'))
+        auth_header = self.headers.get('Authorization')
         if auth_header == None or not self.check_credentials(auth_header):
             self.send_response(401)
             self.send_header('WWW-Authenticate',
@@ -74,17 +81,23 @@ class ServerHandler(http.server.SimpleHTTPRequestHandler):
                     self.send_header(
                         "Content-Disposition", 'attachment; filename="{}"'.format(os.path.basename(FILEPATH)))
                     fs = os.fstat(f.fileno())
-                    self.send_header("Content-Length", str(fs.st_size))
+                    raw_content_length = fs.st_size
+                    content = f.read()
+                    if USE_GZIP_COMPRESSION:
+                        print("Download del documento compresso con GZIP")
+                        self.send_header("Content-Encoding", "gzip")
+                        content = self.gzip_encode(content)
+                        compressed_content_length = len(content)
+                        self.send_header("Content-Length",
+                                         compressed_content_length)
+                    else:
+                        print("Download del documento non compresso")
+                        self.send_header("Content-Length", raw_content_length)
                     self.end_headers()
-                    shutil.copyfileobj(f, self.wfile)
+                    self.wfile.write(content)
+                    #shutil.copyfileobj(f, self.wfile)
             else:
                 http.server.SimpleHTTPRequestHandler.do_GET(self)
-
-    def do_POST(self):
-        self.send_response(401)
-        self.send_header(
-            'WWW-Authenticate', 'Basic realm="Demo Realm"')
-        self.end_headers()
 
 
 # ThreadingTCPServer allows many concurrent requests
