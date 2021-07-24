@@ -11,7 +11,6 @@ import sys
 import signal
 import http.server
 import socketserver
-
 import threading
 import os
 import base64
@@ -22,7 +21,7 @@ FILEPATH = "pdf.pdf"
 
 USER = "admin"
 PASSWORD = "programmazionedireti"
-USE_GZIP_COMPRESSION = True
+USE_GZIP_COMPRESSION = False
 
 # Manage the wait, used for intercept CTRL+C
 waiting_refresh = threading.Event()
@@ -34,8 +33,6 @@ else:
     port = 8080
 
 # Intercept CTRL+C
-
-
 def signal_handler(signal, frame):
     print(' Exiting http server (Ctrl+C pressed)')
     try:
@@ -46,11 +43,8 @@ def signal_handler(signal, frame):
         waiting_refresh.set()
         sys.exit(0)
 
-# YWRtaW46cHJvZ3JhbW1hemlvbmVkaXJldGk=
-
 
 class ServerHandler(http.server.SimpleHTTPRequestHandler):
-
     @staticmethod
     def gzip_encode(content):
         gzip_compress = zlib.compressobj(9, zlib.DEFLATED, zlib.MAX_WBITS | 16)
@@ -95,7 +89,6 @@ class ServerHandler(http.server.SimpleHTTPRequestHandler):
                         self.send_header("Content-Length", raw_content_length)
                     self.end_headers()
                     self.wfile.write(content)
-                    #shutil.copyfileobj(f, self.wfile)
             else:
                 http.server.SimpleHTTPRequestHandler.do_GET(self)
 
