@@ -16,11 +16,14 @@ import os
 import base64
 import zlib
 
-
+# Path to the pdf file
 FILEPATH = "pdf.pdf"
 
+# Login credentials
 USER = "admin"
 PASSWORD = "programmazionedireti"
+
+# Value for the choice of compression
 USE_GZIP_COMPRESSION = False
 
 # Manage the wait, used for intercept CTRL+C
@@ -45,12 +48,15 @@ def signal_handler(signal, frame):
 
 
 class ServerHandler(http.server.SimpleHTTPRequestHandler):
+
+    # Method of compressing using GZIP
     @staticmethod
     def gzip_encode(content):
         gzip_compress = zlib.compressobj(9, zlib.DEFLATED, zlib.MAX_WBITS | 16)
         data = gzip_compress.compress(content) + gzip_compress.flush()
         return data
-
+        
+    # Method for verifying credentials using base64
     @staticmethod
     def check_credentials(auth_header):
         token = auth_header.split(" ")[1]
